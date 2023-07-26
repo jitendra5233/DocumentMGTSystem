@@ -416,7 +416,6 @@ const EditEmployeeExit = () => {
                       <Option value="Under Process">Under Process</Option>
                       <Option value="Hold">Hold</Option>
                       <Option value="Confirm">Confirm</Option>
-                      <Option value="Other">Other</Option>
                     </Select>
                   </Form.Item>
                 </Col>

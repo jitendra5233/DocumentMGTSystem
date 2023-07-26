@@ -68,92 +68,33 @@ const EmployeeExit = () => {
         console.log(err);
       });
   };
-  // const [updatecompanyaccountId, setUpdatecompanyaccountId] = useState([]);
-  // const [oldrenewaldate, setoldasigneddate] = useState([]);
-  // const [oldnotificationdate, setoldnotificationdate] = useState([]);
-
-  // const handleEdit = (id) => {
-  //   showModal();
-  //   setUpdatecompanyaccountId(id);
-  //   tableData.map((x) => {
-  //     if (x.key == id) {
-  //       setoldasigneddate(x.renewal_date);
-  //       setoldnotificationdate(x.notification_date);
-  //       form1.setFieldsValue({
-  //         key: x._id,
-  //         hosting_name: x.hosting_name,
-  //         hosting_url: x.hosting_url,
-  //         services: x.services,
-  //         client_name: x.client_name,
-  //         username: x.username,
-  //         password: x.password,
-  //       });
-  //     }
-  //   });
-  // };
-
-  // const handleUpdate = (values) => {
-  //   values.id = updatecompanyaccountId;
-  //   if (values.renewal_date === undefined) {
-  //     values.renewal_date = oldrenewaldate;
-  //   }
-  //   if (values.notification_date !== undefined && values.renewal_date) {
-  //     values.notification_date = moment(values.renewal_date)
-  //       .subtract(10, "days")
-  //       .format("YYYY-MM-DD");
-  //   }
-  //   axios
-  //     .post("http://localhost:5000/update-companyaccount", values)
-  //     .then((res) => {
-  //       if (res != "") {
-  //         getCompanyAccount();
-  //         setIsModalOpen(false);
-  //         handleCancel(true);
-  //         form1.resetFields();
-  //         notification.success({
-  //           message: "Company Account Updated",
-  //           description: "Company Account has been updated successfully.",
-  //           placement: "topRight",
-  //           icon: <CheckCircleOutlined style={{ color: "#52c41a" }} />,
-  //         });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-  // const onFinishFailed = (errorInfo) => {
-  //   console.log("Failed:", errorInfo);
-  // };
 
   const handleDelete = (id) => {
-    console.log(id);
-    // confirm({
-    //   title: "Delete the Issued Item",
-    //   icon: <ExclamationCircleOutlined />,
-    //   content: "Are you sure to delete this Issue Item?",
-    //   okText: "Yes",
-    //   okType: "danger",
-    //   cancelText: "No",
-    //   onOk() {
-    //     deleteItem(id);
-    //   },
-    // });
+    confirm({
+      title: "Delete the Issued Item",
+      icon: <ExclamationCircleOutlined />,
+      content: "Are you sure to delete this Issue Item?",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        deleteItem(id);
+      },
+    });
   };
 
-  // const deleteItem = (id) => {
-  //   axios
-  //     .delete("http://localhost:5000/delete_companyaccount", {
-  //       data: { id }, // Pass the data as an object
-  //     })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setTableData((prevData) => prevData.filter((item) => item.key !== id));
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
+  const deleteItem = (id) => {
+    axios
+      .delete(`http://localhost:5000/delete_employeeexit/${id}`)
+      .then((response) => {
+        console.log(response.data);
+        setTableData((prevData) => prevData.filter((item) => item.key !== id));
+        getEmployeeExit();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const columns = [
     {

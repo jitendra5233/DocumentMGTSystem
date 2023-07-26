@@ -1576,3 +1576,17 @@ app.delete("/delete_exitemployeedocs/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+app.delete("/delete_employeeexit/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result1 = await EmployeeExit.deleteOne({ _id: id });
+    const result2 = await EmployeeExitDocs.deleteMany({ ref_id: id });
+    if (result1.deletedCount === 1 && result2.deletedCount >= 1) {
+      res.status(200).json({ message: "Deletion successful" });
+    } else {
+      res.status(404).json({ message: "Record not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
