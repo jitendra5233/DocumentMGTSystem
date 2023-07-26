@@ -39,6 +39,7 @@ const HomeSettings = () => {
   const [updateId, setUpdateId] = useState(null);
   const [accountData, setAccountData] = useState([]);
   const [getAcountdata, setAcountdata] = useState([]);
+  console.log(accountData);
 
   useEffect(() => {
     getWebsetting();
@@ -71,6 +72,10 @@ const HomeSettings = () => {
       data.append("carrer_email", values.carrer_email);
       data.append("watsapp_number", values.watsapp_number);
       data.append("Contact_number", values.Contact_number);
+      data.append("smtp_host", values.smtp_host);
+      data.append("smtp_port", values.smtp_port);
+      data.append("smtp_username", values.smtp_username);
+      data.append("smtp_password", values.smtp_password);
       data.append("socialIcons", JSON.stringify(values.socialIcons));
 
       if (values.image) {
@@ -248,6 +253,62 @@ const HomeSettings = () => {
                     {
                       required: true,
                       message: "Please input WhatsApp number!",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  label="SMTP Host"
+                  name="smtp_host"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input SMTP Host!",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  label="SMTP Port"
+                  name="smtp_port"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input SMTP Port!",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  label="SMTP Username"
+                  name="smtp_username"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input SMTP Username!",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  label="SMTP Password"
+                  name="smtp_password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input SMTP Password!",
                     },
                   ]}
                 >

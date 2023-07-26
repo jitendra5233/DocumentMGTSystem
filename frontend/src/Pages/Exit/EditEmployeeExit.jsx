@@ -59,10 +59,11 @@ const EditEmployeeExit = () => {
         const data = result.data;
 
         let newData = [];
-        data.map((x) => {
+        data.map((x, i) => {
           newData.push({
             key: x._id,
             url: x.url,
+            name: `Exit Employee Document ${i + 1}`,
           });
         });
 
@@ -432,28 +433,31 @@ const EditEmployeeExit = () => {
                     </Dragger>
                   </Form.Item>
                 </Col>
-                <List
-                  bordered
-                  dataSource={accountData}
-                  renderItem={(accountData) => (
-                    <List.Item className="list-style">
-                      {accountData.url}
-                      <i
-                        class="fa fa-trash"
-                        id="deleteicon"
-                        aria-hidden="true"
-                        onClick={() => handleDeleteIcon(accountData.key)}
-                      ></i>
-                      <a
-                        href={accountData.url}
-                        className="colorname"
-                        target="_blank"
-                      >
-                        <DownloadOutlined style={{ fontSize: "15px" }} />
-                      </a>
-                    </List.Item>
-                  )}
-                />
+                <Col span={8}>
+                  <List
+                    bordered
+                    dataSource={accountData}
+                    renderItem={(accountData) => (
+                      <List.Item className="list-style">
+                        {accountData.name}
+                        <i
+                          class="fa fa-trash"
+                          id="deleteicon"
+                          aria-hidden="true"
+                          onClick={() => handleDeleteIcon(accountData.key)}
+                        ></i>
+                        <a
+                          href={accountData.url}
+                          className="colorname"
+                          target="_blank"
+                        >
+                          <DownloadOutlined style={{ fontSize: "15px" }} />
+                        </a>
+                      </List.Item>
+                    )}
+                  />
+                </Col>
+
                 <Col span={24}>
                   <Form.Item>
                     <Button type="primary" htmlType="submit" loading={loading}>

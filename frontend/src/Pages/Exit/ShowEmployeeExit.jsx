@@ -22,10 +22,11 @@ const ShowEmployeeExit = () => {
         const data = result.data;
 
         let newData = [];
-        data.map((x) => {
+        data.map((x, i) => {
           newData.push({
             key: x._id,
             url: x.url,
+            name: `Exit Employee Document ${i + 1}`,
           });
         });
 
@@ -282,7 +283,7 @@ const ShowEmployeeExit = () => {
                     dataSource={accountData}
                     renderItem={(accountData) => (
                       <List.Item className="list-style">
-                        {accountData.url}
+                        {accountData.name}
                         <a
                           href={accountData.url}
                           className="colorname"

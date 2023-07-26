@@ -127,7 +127,7 @@ const ShowIssuedEnventory = () => {
           quantity: x.quantity,
           emp_name: x.emp_name,
           emp_code: x.emp_code,
-          job_title: x.designation,
+          job_title: x.job_title,
         });
       }
     });
