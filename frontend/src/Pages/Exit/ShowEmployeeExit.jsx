@@ -26,7 +26,7 @@ const ShowEmployeeExit = () => {
           newData.push({
             key: x._id,
             url: x.url,
-            name: `Exit Employee Document ${i + 1}`,
+            name: `Employee Document ${i + 1}`,
           });
         });
 
