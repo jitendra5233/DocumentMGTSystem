@@ -7,15 +7,13 @@ import {
   Input,
   Row,
   Typography,
-  AutoComplete,
-  Upload,
   notification,
   message,
   Modal,
 } from "antd";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { PlusOutlined, DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Dragger from "antd/es/upload/Dragger";
 
@@ -36,7 +34,6 @@ const EditEmployeeExit = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
-  const [updateId, setUpdateId] = useState(null);
   const [accountData, setAccountData] = useState([]);
   const openNotificationWithIcon = (type, message) => {
     if (type === "error") {

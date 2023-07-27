@@ -2,42 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { CheckCircleOutlined } from "@ant-design/icons";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  LogoutOutlined,
-  UploadOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
-import {
-  Button,
-  Table,
-  Modal,
-  Typography,
-  Row,
-  Col,
-  Avatar,
-  notification,
-  Form,
-  Input,
-  Space,
-  DatePicker,
-  AutoComplete,
-  Select,
-  Spin,
-} from "antd";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { Table, Modal, Typography, Form, Input, Select } from "antd";
 import "@fortawesome/fontawesome-free/css/all.min.css"; // Import Font Awesome CSS
-const { TextArea } = Input;
 const { Title } = Typography;
 const { confirm } = Modal;
-const { Option } = Select;
-const moment = require("moment");
-
 const EmployeeExit = () => {
   const [tableData, setTableData] = useState([]);
-  const [form] = Form.useForm();
-  const [form1] = Form.useForm();
   useEffect(() => {
     getEmployeeExit();
   }, []);

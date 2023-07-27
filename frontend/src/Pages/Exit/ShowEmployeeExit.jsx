@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Col, Form, Input, Row, Typography } from "antd";
 import axios from "axios";
-import { PlusOutlined, DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { List } from "antd";
 import { Link } from "react-router-dom";
