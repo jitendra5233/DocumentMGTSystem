@@ -29,6 +29,18 @@ const EmployeeExitDocs = require("./Model/EmployeeExitDocs");
 
 const singleUpload = upload.single("image");
 const docUpload = upload.single("file");
+const doc1Upload = (req, res) => {
+  return new Promise((resolve, reject) => {
+    upload.single("file")(req, res, function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
 
 require("dotenv").config();
 
@@ -713,7 +725,7 @@ app.delete("/delete_item/:id", async (req, res) => {
 
 app.post("/update-expense", async (req, res) => {
   try {
-    const { id, item_name, paid_amount, quantity, r_getamt, r_paidamt } =
+    const { id, item_name, paid_amount, quantity, r_getamt, r_paidamt,buying_date } =
       req.body;
     const result = await Expense.findByIdAndUpdate(id, {
       item_name,
@@ -721,6 +733,7 @@ app.post("/update-expense", async (req, res) => {
       quantity,
       r_getamt,
       r_paidamt,
+      buying_date,
     });
     if (!result) {
       return res
@@ -1271,6 +1284,7 @@ app.post("/update_websetting", upload.single("image"), async (req, res) => {
       smtp_username,
       smtp_password,
       img: imgLocation,
+      loginimg:'null',
       socialIcons: websetting.socialIcons,
     };
 
@@ -1282,6 +1296,44 @@ app.post("/update_websetting", upload.single("image"), async (req, res) => {
   }
 });
 
+app.post("/update_loginimage", async (req, res) => {
+  try {
+    await doc1Upload(req, res); 
+    await Websetting.findByIdAndUpdate(req.body.id, {
+      loginimg: req.file.location,
+    });
+
+    res.status(200).json({ status: true });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+app.post("/update_logo", async (req, res) => {
+  try {
+    await doc1Upload(req, res); 
+    await Websetting.findByIdAndUpdate(req.body.id, {
+      img: req.file.location,
+    });
+
+    res.status(200).json({ status: true });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
+    app.post("/deleteloginimg", async (req, res) => {
+      try {
+        const { id } = req.body;
+        const result = await Websetting.deleteOne({ _id: id });
+    
+        res.status(200).json(result);
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+    });
+    
 app.delete(
   "/delete_social_icon/:websettingId/:socialIconId",
   async (req, res) => {
@@ -1588,5 +1640,32 @@ app.delete("/delete_employeeexit/:id", async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+
+app.post('/update_password', async (req, res) => {
+  const { id, oldpassword, newpassword } = req.body;
+  try {
+    const user = await Users.findOne({ _id: id });
+    if (!user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // You need to define the comparePassword method on your User model
+    if(oldpassword == user.password)
+    {
+      user.password = newpassword;
+      await user.save();
+  
+      res.json({ message: 'Password updated successfully' });
+    }
+    if(oldpassword != user.password)
+    {
+      res.json({ message: 'Old Password does Not Matched!' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to update password' });
   }
 });
