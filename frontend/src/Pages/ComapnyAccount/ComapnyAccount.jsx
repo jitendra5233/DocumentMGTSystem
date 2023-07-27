@@ -3,12 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { CheckCircleOutlined } from "@ant-design/icons";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  LogoutOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import {
   Button,
   Table,
@@ -16,7 +11,6 @@ import {
   Typography,
   Row,
   Col,
-  Avatar,
   notification,
   Form,
   Input,
@@ -42,9 +36,6 @@ const CompantAccount = () => {
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [resultModalVisible, setResultModalVisible] = useState(false);
-  const [isItemAssigned, setIsItemAssigned] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -161,11 +152,8 @@ const CompantAccount = () => {
       .post("http://localhost:5000/add_companyaccount", formattedValues)
       .then((res) => {
         setLoading(false);
-        setIsSubmitted(true);
         form2.resetFields();
         handleCancel1(true);
-        setResultModalVisible(true);
-        setIsItemAssigned(true);
         getCompanyAccount();
         notification.success({
           message: "Company Account Added",

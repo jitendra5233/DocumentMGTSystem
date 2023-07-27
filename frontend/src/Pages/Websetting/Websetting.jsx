@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  Card,
   Form,
   Input,
   Button,
@@ -16,15 +15,9 @@ import {
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { CheckCircleOutlined } from "@ant-design/icons";
-import { Avatar, Divider, List, Skeleton } from "antd";
+import { List } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
-import {
-  EditOutlined,
-  LogoutOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
-// import InfiniteScroll from 'react-infinite-scroll-component';
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -38,7 +31,6 @@ const HomeSettings = () => {
   ]);
   const [updateId, setUpdateId] = useState(null);
   const [accountData, setAccountData] = useState([]);
-  const [getAcountdata, setAcountdata] = useState([]);
   console.log(accountData);
 
   useEffect(() => {
