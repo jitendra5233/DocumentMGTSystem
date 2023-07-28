@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Progress, Tooltip, Avatar } from "antd";
-
+import axios from "axios";
 const myStyle = {
   cardTxtContainer: {
     display: "flex",
@@ -20,7 +20,21 @@ const CardComp = ({
   sno3,
   sno4,
 }) => {
-  console.log(title);
+  useEffect(() => {
+    getAllEmployee();
+  }, []);
+  const [EmployeeCount, setEmployeeCount] = useState([]);
+  const getAllEmployee = () => {
+    axios
+      .get("http://localhost:5000/getAllEmployeedata")
+      .then((result) => {
+        let data = result.data;
+        setEmployeeCount(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <Card className="dashboardCard">
       <div style={myStyle.cardTxtContainer}>
@@ -137,21 +151,8 @@ export const Dashboard = () => {
             title="Total No of employees"
             totalNo="60"
             onetxt="Permanent"
-            twotxt="Contract"
+            twotxt="Intern"
             threetxt=""
-            sno1="40"
-            sno2="60%"
-            sno3="40"
-            sno4="60%"
-          />
-        </Col>
-        <Col span={12} style={{ padding: "20px" }}>
-          <CardComp
-            title="Total items in inventory"
-            totalNo="60"
-            onetxt="Given"
-            twotxt="Lost"
-            threetxt="Damaged"
             sno1="40"
             sno2="60%"
             sno3="40"
@@ -162,15 +163,30 @@ export const Dashboard = () => {
           <CardComp
             title="Job positions this month"
             totalNo="60"
-            onetxt="Offer"
-            twotxt="Hired"
-            threetxt="Opening"
+            onetxt="Hired"
+            twotxt="Opening"
+            threetxt=""
             sno1="40"
             sno2="60%"
             sno3="40"
             sno4="60%"
           />
         </Col>
+
+        <Col span={12} style={{ padding: "20px" }}>
+          <CardComp
+            title="Total items in inventory"
+            totalNo="60"
+            onetxt="Assigned"
+            twotxt="Lost/Damaged"
+            threetxt="Available"
+            sno1="40"
+            sno2="60%"
+            sno3="40"
+            sno4="60%"
+          />
+        </Col>
+
         <Col span={12} style={{ padding: "20px" }}>
           <CardComp
             title="Client Accounts"

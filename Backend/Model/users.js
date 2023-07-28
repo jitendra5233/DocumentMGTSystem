@@ -89,6 +89,12 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    img: {
+      type: String,
+    },
+    department: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

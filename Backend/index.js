@@ -1643,6 +1643,7 @@ app.delete("/delete_employeeexit/:id", async (req, res) => {
   }
 });
 
+// Admin Profile Api
 
 app.post('/update_password', async (req, res) => {
   const { id, oldpassword, newpassword } = req.body;
@@ -1651,8 +1652,6 @@ app.post('/update_password', async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-
-    // You need to define the comparePassword method on your User model
     if(oldpassword == user.password)
     {
       user.password = newpassword;
@@ -1667,5 +1666,77 @@ app.post('/update_password', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to update password' });
+  }
+});
+
+app.post("/usresdata", async (req, res) => {
+  try {
+    const { id } = req.body;
+    await Users.findOne({ _id: id }).then(function (doc) {
+      res.status(200).json(doc); 
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/update_adminprofilepic", async (req, res) => {
+  try {
+    await doc1Upload(req, res); 
+    await Users.findByIdAndUpdate(req.body.id, {
+      img: req.file.location,
+    });
+
+    res.status(200).json({ status: true });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+app.post("/update_profile", upload.single("image"), async (req, res) => {
+  try {
+    const {
+      id,
+      l_name: l_name,
+      f_name: f_name,
+      job_title: job_title,
+      emp_code: emp_code,
+      department: department,
+    } = req.body;
+
+    if (req.file) {
+      const imgLocation = req.file.location;
+      await Users.findByIdAndUpdate(id, {
+      l_name: l_name,
+      f_name: f_name,
+      job_title: job_title,
+      emp_code: emp_code,
+      department: department,
+      img: imgLocation,
+      });
+    } else {
+      await Users.findByIdAndUpdate(id, {
+        l_name: l_name,
+        f_name: f_name,
+        job_title: job_title,
+        emp_code: emp_code,
+        department: department,
+      });
+    }
+    res.status(200).json({ status: true });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+//Get DashBoard Data
+app.get("/getAllEmployeedata", async (req, res) => {
+  try {
+    const totalEmployeeCount = await EmployeeSchema.countDocuments();
+    res.status(200).json({ totalEmployeeCount });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });

@@ -108,9 +108,14 @@ const LayoutCom2 = () => {
         <h5>Admin</h5>
       </div>
       <div style={{ margin: "10px 0 0 0" }}>
-        <Button type="primary" block primary onClick={showModal}>
+        <Link to={`/profile/${user_id}`} className="menuText">
+          <Button type="primary" block primary onClick={showModal}>
+            Profile
+          </Button>
+        </Link>
+        {/* <Button type="primary" block primary onClick={showModal}>
           Update Password
-        </Button>
+        </Button> */}
         <Button type="primary" block danger onClick={() => handleLogout()}>
           Logout
         </Button>
@@ -441,8 +446,10 @@ const LayoutCom2 = () => {
                   />
                 </div>
                 <div>
-                  <Link to="/" className="menuText">
-                    Logout
+                  <Link className="menuText">
+                    <a onClick={() => handleLogout()}>
+                      <span>Logout</span>
+                    </a>
                   </Link>
                 </div>
               </div>
@@ -539,97 +546,6 @@ const LayoutCom2 = () => {
           </Content>
         </Layout>
       </Layout>
-      <Modal open={isModalOpen} onCancel={handleCancel} footer={[]}>
-        <Spin spinning={loading}>
-          {contextHolder}
-          <div style={{ padding: "30px" }}>
-            <Row>
-              <Col span={24} style={{ marginBottom: "30px" }}>
-                <span className="popupTitle">Update Password</span>
-              </Col>
-              <Col span={24}>
-                <Form
-                  form={form}
-                  name="basic"
-                  layout="vertical"
-                  initialValues={{
-                    remember: true,
-                  }}
-                  onFinish={handleUpdate}
-                  autoComplete="off"
-                >
-                  <Row gutter={24}>
-                    <Col span={12}>
-                      <Form.Item
-                        label="Old Password"
-                        name="old_password"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input old password",
-                          },
-                        ]}
-                        hasFeedback
-                      >
-                        <Input
-                          className="myAntIpt2"
-                          placeholder="Enter new password"
-                          size="small"
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        label="New Password"
-                        name="new_password"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input New password",
-                          },
-                        ]}
-                        hasFeedback
-                      >
-                        <Input
-                          className="myAntIpt2"
-                          placeholder="Enter New password"
-                          size="small"
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        label="Confirm Password"
-                        name="confirm_password"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input confirm password",
-                          },
-                        ]}
-                        hasFeedback
-                      >
-                        <Input
-                          className="myAntIpt2"
-                          placeholder="Enter confirm password"
-                          size="small"
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                      <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                          Submit
-                        </Button>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </Form>
-              </Col>
-            </Row>
-          </div>
-        </Spin>
-      </Modal>
     </>
   );
 };

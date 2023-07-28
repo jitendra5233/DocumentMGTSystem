@@ -45,6 +45,7 @@ import AddIssuedEnventory from "./Pages/Enventory/addIssuedInventory";
 import AddEmployeeExit from "./Pages/Exit/AddEmployeeExit";
 import ShowEmployeeExit from "./Pages/Exit/ShowEmployeeExit";
 import EditEmployeeExit from "./Pages/Exit/EditEmployeeExit";
+import AdminProfile from "./Pages/Profile/AdminProfile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -94,6 +95,7 @@ const router = createBrowserRouter(
         <Route path="/add-employeeexit" element={<AddEmployeeExit />} />
         <Route path="/view-employeeexit/:id" element={<ShowEmployeeExit />} />
         <Route path="/edit-employeeexit/:id" element={<EditEmployeeExit />} />
+        <Route path="/profile/:id" element={<AdminProfile />} />
       </Route>
     </Route>
   )
