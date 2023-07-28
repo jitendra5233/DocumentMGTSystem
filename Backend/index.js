@@ -1735,8 +1735,135 @@ app.post("/update_profile", upload.single("image"), async (req, res) => {
 app.get("/getAllEmployeedata", async (req, res) => {
   try {
     const totalEmployeeCount = await EmployeeSchema.countDocuments();
-    res.status(200).json({ totalEmployeeCount });
+    res.status(200).json(totalEmployeeCount);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
+
+app.get("/getAllPermanentEmployeedata", async (req, res) => {
+  try {
+    const permanentEmployeeCount = await EmployeeSchema.countDocuments({ emp_status: 'permanent' });
+    res.status(200).json(permanentEmployeeCount);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.get("/getAllInternEmployeedata", async (req, res) => {
+  try {
+    const inetrnEmployeeCount = await EmployeeSchema.countDocuments({ emp_status: 'intern' });
+    res.status(200).json(inetrnEmployeeCount);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.get("/getJobPositions", async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const currentYear = currentDate.getUTCFullYear();
+    const currentMonth = currentDate.getUTCMonth() + 1;
+    const currentMonthISO = `${currentYear}-${currentMonth.toString().padStart(2, '0')}`;
+    const firstDayOfMonth = new Date(`${currentMonthISO}-01T00:00:00.000Z`);
+    const lastDayOfMonth = new Date(new Date(firstDayOfMonth).setUTCMonth(firstDayOfMonth.getUTCMonth() + 1) - 1);
+    const query = {
+      createdAt: {
+        $gte: firstDayOfMonth,
+        $lte: lastDayOfMonth,
+      },
+    };
+    const jobPositionCount = await DepartmentPositions.countDocuments(query);
+    res.status(200).json(jobPositionCount);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+app.get("/getHiredCandidatecount", async (req, res) => {
+  try {
+    const hiredEmployee = await DepartmentPositionsCandidate.countDocuments({ hired: true });
+    res.status(200).json(hiredEmployee);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+app.get("/getHiredCandidatePercentage", async (req, res) => {
+  try {
+    const hiredEmployee = await DepartmentPositionsCandidate.countDocuments({ hired: true });
+    const totalJobPositions = await DepartmentPositions.countDocuments();
+    const hiredCandidatePer = (hiredEmployee / totalJobPositions) * 100;
+    res.status(200).json( hiredCandidatePer);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
+app.get("/totalItemQuantity", async (req, res) => {
+  try {
+
+    const totalQuantityResult = await Inventoryitem.aggregate([
+      { $group: { _id: null, totalQuantity: { $sum: "$quantity" } } },
+    ]);
+    const totalAssignedQuantityResult = await Enventory.aggregate([
+      { $group: { _id: null, totalQuantity: { $sum: "$quantity" } } },
+    ]);
+    const TotalLossAndDamageQuantityResult = await Inventoryitem.aggregate([
+      { $group: { _id: null, totalQuantity: { $sum: "$lossDamageItem" } } },
+    ]);
+    const totalQuantity = totalQuantityResult.length > 0 ? totalQuantityResult[0].totalQuantity : 0;
+    const totalAssignedQuantity = totalAssignedQuantityResult.length > 0 ? totalAssignedQuantityResult[0].totalQuantity : 0;
+    const TotalLossAndDamageQuantity = TotalLossAndDamageQuantityResult.length > 0 ? TotalLossAndDamageQuantityResult[0].totalQuantity : 0;
+
+    // Calculate the total available quantity
+    const totalAvailableQuantity = totalQuantity - totalAssignedQuantity - TotalLossAndDamageQuantity;
+
+    // Calculate the percentage of available items
+    const totalAvailableItemPer = (totalAvailableQuantity / totalQuantity) * 100;
+    const totalLossDamageItemPer = (TotalLossAndDamageQuantity / totalQuantity) * 100;
+
+
+    // Return the results as a response
+    res.status(200).json({
+      totalQuantity,
+      totalAssignedQuantity,
+      totalAvailableQuantity,
+      totalAvailableItemPer,
+      TotalLossAndDamageQuantity,
+      totalLossDamageItemPer,
+    });
+  } catch (err) {
+    // Handle errors
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+app.get("/getAssignedItemWithPercentage", async (req, res) => {
+  try {
+    const totalQuantityResult = await Inventoryitem.aggregate([
+      { $group: { _id: null, totalQuantity: { $sum: "$quantity" } } },
+    ]);
+    const totalAssignedQuantityResult = await Enventory.aggregate([
+      { $group: { _id: null, totalQuantity: { $sum: "$quantity" } } },
+    ]);
+    const totalQuantity = totalQuantityResult.length > 0 ? totalQuantityResult[0].totalQuantity : 0;
+    const totalAssignedQuantity = totalAssignedQuantityResult.length > 0 ? totalAssignedQuantityResult[0].totalQuantity : 0;
+    const assignedPercentage = (totalAssignedQuantity / totalQuantity) * 100;
+    res.status(200).json({
+      assignedPercentage,
+      totalAssignedQuantity,
+    });
+  } catch (err) {
+    // Handle errors
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
